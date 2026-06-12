@@ -6,12 +6,12 @@ from pathlib import Path
 
 FALLBACK_PATH = Path(__file__).resolve().parent.parent / "data" / "fallback_snapshot.json"
 
-API_BASE = "https://worldcup26.ir/api/get"
+API_BASE = "https://worldcup26.ir"
 ENDPOINTS = {
-    "games": f"{API_BASE}/games",
-    "groups": f"{API_BASE}/groups",
-    "teams": f"{API_BASE}/teams",
-    "stadiums": f"{API_BASE}/stadiums",
+    "games": f"{API_BASE}/get/games",
+    "groups": f"{API_BASE}/get/groups",
+    "teams": f"{API_BASE}/get/teams",
+    "stadiums": f"{API_BASE}/get/stadiums",
 }
 
 CACHE_TTL = 600
@@ -73,10 +73,17 @@ def _fetch_resource(resource):
     if not url:
         return []
     try:
-        resp = requests.get(url, timeout=8)
-        resp.raise_for_status()
+        resp = requests.get(url, timeout=10)
+        if resp.status_code >= 500:
+            return None
         data = resp.json()
         return _normalize_array(data, resource)
+    except requests.Timeout:
+        return None
+    except requests.ConnectionError:
+        return None
+    except json.JSONDecodeError:
+        return None
     except Exception:
         return None
 
