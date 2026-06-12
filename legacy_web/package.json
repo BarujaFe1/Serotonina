@@ -1,0 +1,23 @@
+{
+  "name": "o-sonho-ainda-esta-vivo-copa-2026",
+  "version": "2.0.0",
+  "description": "Painel premium para acompanhar uma aposta combinada da Copa do Mundo 2026 com API e modelo estatístico.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "world-cup",
+    "copa-2026",
+    "bet-tracker",
+    "betano",
+    "statistical-model"
+  ],
+  "author": "ChatGPT",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-fetch": "^2.7.0"
+  }
+}

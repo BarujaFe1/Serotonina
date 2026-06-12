@@ -1,0 +1,19 @@
+{
+  "games": [],
+  "groups": [],
+  "teams": [
+    { "id": "1", "name_en": "Brazil", "name": "Brazil" },
+    { "id": "2", "name_en": "Argentina", "name": "Argentina" },
+    { "id": "3", "name_en": "Spain", "name": "Spain" },
+    { "id": "4", "name_en": "Germany", "name": "Germany" },
+    { "id": "5", "name_en": "Portugal", "name": "Portugal" },
+    { "id": "6", "name_en": "England", "name": "England" },
+    { "id": "7", "name_en": "France", "name": "France" },
+    { "id": "8", "name_en": "Netherlands", "name": "Netherlands" },
+    { "id": "9", "name_en": "Belgium", "name": "Belgium" },
+    { "id": "10", "name_en": "Uruguay", "name": "Uruguay" },
+    { "id": "11", "name_en": "Croatia", "name": "Croatia" },
+    { "id": "12", "name_en": "Morocco", "name": "Morocco" }
+  ],
+  "stadiums": []
+}

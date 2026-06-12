@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08080e">
+  <title>O sonho ainda está vivo? — Aposta Copa 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="aurora aurora-one"></div>
+  <div class="aurora aurora-two"></div>
+  <div class="aurora aurora-three"></div>
+  <div class="noise"></div>
+
+  <main class="shell">
+    <header class="hero glass">
+      <nav class="topbar">
+        <div class="brand">
+          <span class="brand-mark">26</span>
+          <div>
+            <strong>Aposta Copa 2026</strong>
+            <small>Brasil + Argentina semis • Espanha quartas • 4 gigantes nas oitavas</small>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="ghost" id="refreshBtn">Atualizar agora</button>
+          <button class="ghost" id="openBetanoBtn">Abrir Betano</button>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Odd 75 • Stake inicial R$ 10 • Copa do Mundo FIFA 2026</span>
+          <h1>O sonho ainda está vivo?</h1>
+          <p>
+            Um painel premium para checar o bilhete automaticamente, acompanhar as fases da Copa,
+            recalcular a odd justa do modelo estatístico e comparar o valor teórico com a odd contratada.
+          </p>
+          <div class="hero-badges">
+            <span id="apiStatus" class="pill neutral">API aguardando atualização</span>
+            <span id="betStatus" class="pill neutral">Bilhete em análise</span>
+            <span id="modelStatus" class="pill neutral">Modelo aguardando dados</span>
+          </div>
+        </div>
+
+        <div class="ticket-card">
+          <div class="ticket-glow"></div>
+          <div class="ticket-head">
+            <span>Bilhete múltiplo</span>
+            <strong id="ticketStatusLabel">Pendente</strong>
+          </div>
+          <div class="ticket-metric">
+            <small>Retorno potencial</small>
+            <strong id="potentialReturn">R$ 750,00</strong>
+          </div>
+          <div class="ticket-strip">
+            <span>Stake</span><b id="stakeMini">R$ 10,00</b>
+            <span>Odd</span><b id="oddMini">75.00</b>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span>Condições cumpridas</span>
+              <strong id="progressText">0/7</strong>
+            </div>
+            <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <section class="metrics-grid">
+      <article class="metric glass highlight">
+        <span>Odd justa do modelo</span>
+        <strong id="modelOddCard">—</strong>
+        <small>Atualiza com API + checklist + ratings</small>
+      </article>
+      <article class="metric glass">
+        <span>Probabilidade modelada</span>
+        <strong id="modelProbCard">—</strong>
+        <small id="breakEvenText">Break-even da odd 75: 1,33%</small>
+      </article>
+      <article class="metric glass">
+        <span>Valor justo estimado</span>
+        <strong id="fairValueCard">—</strong>
+        <small>Valor matemático atual do bilhete</small>
+      </article>
+      <article class="metric glass">
+        <span>EV do modelo</span>
+        <strong id="modelEvCard">—</strong>
+        <small id="edgeText">Edge contra odd contratada</small>
+      </article>
+    </section>
+
+    <section class="content-grid main-row">
+      <aside class="panel glass controls-panel">
+        <div class="panel-title">
+          <div>
+            <span class="eyebrow">Controle do bilhete</span>
+            <h2>Stake, odd e Betano</h2>
+          </div>
+        </div>
+
+        <div class="field-row two">
+          <label>
+            Stake apostada
+            <div class="money-input">
+              <span>R$</span>
+              <input id="stakeInput" type="number" min="0" step="0.01" value="10">
+            </div>
+          </label>
+          <label>
+            Odd de entrada
+            <input id="oddInput" type="number" min="1" step="0.01" value="75">
+          </label>
+        </div>
+
+        <div class="quick-buttons">
+          <button data-stake-delta="-10">-10</button>
+          <button data-stake-delta="-1">-1</button>
+          <button data-stake-delta="1">+1</button>
+          <button data-stake-delta="10">+10</button>
+        </div>
+
+        <div class="mini-ledger">
+          <div><span>Retorno bruto</span><strong id="grossReturnCard">R$ 750,00</strong></div>
+          <div><span>Lucro líquido</span><strong id="profitCard">R$ 740,00</strong></div>
+          <div><span>Prob. implícita</span><strong id="impliedProb">1,33%</strong></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <label>
+          Link da Betano ou do bilhete
+          <input id="betanoUrl" type="url" placeholder="https://www.betano.bet.br/...">
+        </label>
+        <p class="helper">
+          A Betano não tem API pública gratuita para consultar um bilhete específico. Este painel abre seu link salvo,
+          mantém histórico manual e calcula uma odd/modelo independente.
+        </p>
+
+        <div class="field-row two">
+          <label>
+            Odd atual / cashout
+            <input id="snapshotOdd" type="number" min="1" step="0.01" placeholder="ex: 62.50">
+          </label>
+          <label>
+            Valor cashout
+            <div class="money-input">
+              <span>R$</span>
+              <input id="snapshotCashout" type="number" min="0" step="0.01" placeholder="ex: 38.00">
+            </div>
+          </label>
+        </div>
+        <button class="primary full" id="saveSnapshotBtn">Salvar snapshot da Betano</button>
+      </aside>
+
+      <section class="panel glass bet-panel">
+        <div class="panel-title split">
+          <div>
+            <span class="eyebrow">Condições da aposta</span>
+            <h2>Checklist automático por fase</h2>
+          </div>
+          <button class="ghost small" id="resetLegsBtn">Restaurar bilhete original</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="legs-table">
+            <thead>
+              <tr>
+                <th>Seleção</th>
+                <th>Precisa chegar</th>
+                <th>Fase detectada</th>
+                <th>Prob. restante</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="legsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="add-leg">
+          <input id="newTeam" type="text" placeholder="Adicionar seleção">
+          <select id="newTargetStage"></select>
+          <button class="ghost" id="addLegBtn">Adicionar</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="content-grid model-row">
+      <section class="panel glass model-panel">
+        <div class="panel-title split">
+          <div>
+            <span class="eyebrow">Modelo estatístico robusto</span>
+            <h2>Odd viva calculada pelo painel</h2>
+          </div>
+          <span id="modelUpdatedAt" class="pill neutral">Sem cálculo</span>
+        </div>
+
+        <div class="model-grid">
+          <div class="model-main-card">
+            <small>Probabilidade atual do bilhete</small>
+            <strong id="modelProbabilityBig">—</strong>
+            <span id="modelVerdict">Aguardando sincronização.</span>
+          </div>
+          <div class="model-main-card soft">
+            <small>Cashout justo conservador</small>
+            <strong id="fairCashoutCard">—</strong>
+            <span id="cashoutHelp">Após margem configurada.</span>
+          </div>
+          <div class="model-main-card soft">
+            <small>Confiança do cálculo</small>
+            <strong id="confidenceCard">—</strong>
+            <span id="dataQualityCard">Qualidade dos dados</span>
+          </div>
+        </div>
+
+        <div class="model-controls">
+          <label>
+            Perfil do modelo
+            <select id="modelProfile">
+              <option value="conservative">Conservador</option>
+              <option value="balanced">Equilibrado</option>
+              <option value="optimistic">Agressivo</option>
+            </select>
+          </label>
+          <label class="slider-label compact">
+            Margem para cashout
+            <div class="slider-top"><strong id="cashoutMarginLabel">88%</strong><span>bookmaker haircut</span></div>
+            <input id="cashoutMargin" type="range" min="70" max="100" step="1" value="88">
+          </label>
+          <label class="slider-label compact">
+            Correlação/risco de chave
+            <div class="slider-top"><strong id="correlationLabel">Normal</strong><span>penaliza combinações difíceis</span></div>
+            <input id="correlationWeight" type="range" min="0" max="100" step="5" value="55">
+          </label>
+        </div>
+
+        <div class="formula-card">
+          <span>Como o modelo calcula</span>
+          <p>
+            Probabilidade do bilhete = produto das probabilidades restantes de cada seleção × ajuste de correlação × ajuste de perfil.
+            Seleções já cumpridas viram 100%; seleções eliminadas viram 0%; fases detectadas pela API encurtam o caminho restante.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel glass radar-panel">
+        <div class="panel-title">
+          <div>
+            <span class="eyebrow">Radar de risco</span>
+            <h2>Chance por seleção</h2>
+          </div>
+        </div>
+        <div id="probBars" class="prob-bars"></div>
+      </section>
+    </section>
+
+    <section class="content-grid second-row">
+      <section class="panel glass timeline-panel">
+        <div class="panel-title">
+          <div>
+            <span class="eyebrow">Linha do tempo</span>
+            <h2>Fases que importam para o bilhete</h2>
+          </div>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <section class="panel glass activity-panel">
+        <div class="panel-title split">
+          <div>
+            <span class="eyebrow">Histórico da Betano</span>
+            <h2>Odd, cashout e observações</h2>
+          </div>
+          <button class="ghost small" id="clearSnapshotsBtn">Limpar</button>
+        </div>
+        <div id="snapshotsList" class="snapshots"></div>
+      </section>
+    </section>
+
+    <section class="content-grid improvements-row">
+      <section class="panel glass improvements-panel">
+        <div class="panel-title">
+          <div>
+            <span class="eyebrow">Melhorias adicionadas</span>
+            <h2>O que deixei mais profissional</h2>
+          </div>
+        </div>
+        <div class="improvements-list">
+          <article><b>1</b><span>API com proxy local e fallback, para não travar a interface se o servidor externo oscilar.</span></article>
+          <article><b>2</b><span>Modelo estatístico com ratings, fase detectada, forma recente, correlação do bilhete e margem de cashout.</span></article>
+          <article><b>3</b><span>Radar por seleção, mostrando qual perna do bilhete mais pesa na odd viva.</span></article>
+          <article><b>4</b><span>Histórico manual da Betano para comparar odd/cashout real contra valor justo estimado.</span></article>
+        </div>
+      </section>
+
+      <section class="panel glass api-panel">
+        <div class="panel-title split">
+          <div>
+            <span class="eyebrow">Integrações</span>
+            <h2>Dados da Copa + odds gerais</h2>
+          </div>
+          <span class="pill neutral" id="lastSync">Sem sincronização</span>
+        </div>
+        <div class="api-grid">
+          <div>
+            <h3>API principal: WorldCup26</h3>
+            <p>O servidor local consulta jogos, grupos, times e estádios. O endpoint unificado usado pelo painel é:</p>
+            <pre><code>GET /api/worldcup/snapshot</code></pre>
+          </div>
+          <div>
+            <h3>Odds API opcional</h3>
+            <p>Use apenas para testar mercados gerais/futures quando tiver chave. Não consulta seu bilhete específico na Betano.</p>
+            <div class="field-row three">
+              <input id="oddsApiKey" type="password" placeholder="The Odds API key">
+              <input id="oddsSportKey" type="text" value="soccer_fifa_world_cup">
+              <button class="ghost" id="testOddsBtn">Testar</button>
+            </div>
+            <div id="oddsResult" class="odds-result">Nenhuma consulta realizada.</div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
